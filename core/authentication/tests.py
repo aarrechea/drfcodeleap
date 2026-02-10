@@ -12,6 +12,7 @@ class AuthenticationTests(APITestCase):
         self.refresh_url = reverse('auth-refresh-list')
         self.user_data = {
             'email': 'test@example.com',
+            'username': 'testuser',
             'password': 'password123',
             'first_name': 'Test',
             'last_name': 'User'
@@ -21,6 +22,7 @@ class AuthenticationTests(APITestCase):
     def test_registration(self):
         data = {
             'email': 'newuser@example.com',
+            'username': 'newuser',
             'password': 'newpassword123',
             'first_name': 'New',
             'last_name': 'User'
@@ -45,7 +47,7 @@ class AuthenticationTests(APITestCase):
         self.assertIn('access', response.data)
         self.assertIn('refresh', response.data)
         self.assertIn('user', response.data)
-        self.assertEqual(response.data['user']['email'], 'test@example.com')
+        self.assertEqual(response.data['user']['username'], 'testuser')
 
     def test_login_invalid_credentials(self):
         data = {

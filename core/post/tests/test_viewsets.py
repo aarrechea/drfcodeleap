@@ -8,7 +8,7 @@ User = get_user_model()
 
 class PostViewSetTest(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(email='apiuser@example.com', password='password123')
+        self.user = User.objects.create_user(email='apiuser@example.com', username='apiuser', password='password123')
         self.client.force_authenticate(user=self.user)
 
         self.post_data = {
@@ -23,7 +23,7 @@ class PostViewSetTest(APITestCase):
     def test_list_posts(self):
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data['results']), 1)
 
     def test_create_post(self):
         new_post_data = {

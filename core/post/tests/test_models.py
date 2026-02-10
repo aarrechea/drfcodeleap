@@ -6,7 +6,7 @@ User = get_user_model()
 
 class PostModelTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(email='test@example.com', password='password123')
+        self.user = User.objects.create_user(email='test@example.com', username='testuser', password='password123')
 
     def test_post_creation(self):
         post = Post.objects.create(
