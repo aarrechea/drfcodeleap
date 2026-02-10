@@ -91,9 +91,8 @@ WSGI_APPLICATION = 'drf_project.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Database - use DATABASE_URL on Heroku, fallback to env vars locally
 if env('DATABASE_URL', default=None):
     DATABASES = {
         'default': dj_database_url.config(
@@ -103,14 +102,15 @@ if env('DATABASE_URL', default=None):
         )
     }
 else:
+    # Local development or reliable fallback
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': env('DATABASE_NAME'),
-            'USER': env('DATABASE_USER'),
-            'PASSWORD': env('DATABASE_PASSWORD'),
-            'HOST': env('DATABASE_HOST'),
-            'PORT': env('DATABASE_PORT')
+            'NAME': env('DATABASE_NAME', default='postgres'),
+            'USER': env('DATABASE_USER', default='postgres'),
+            'PASSWORD': env('DATABASE_PASSWORD', default='postgres'),
+            'HOST': env('DATABASE_HOST', default='localhost'),
+            'PORT': env('DATABASE_PORT', default='5432'),
         }
     }
 
