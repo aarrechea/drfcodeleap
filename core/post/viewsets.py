@@ -38,7 +38,7 @@ class PostViewSet(viewsets.ModelViewSet):
         else:
             Like.objects.create(user=user, post=post, like=True)
 
-        # Refresh from db to get updated counts if needed, or just serialize
+        post.refresh_from_db()
         serializer = self.get_serializer(post)
         return Response(serializer.data)
 

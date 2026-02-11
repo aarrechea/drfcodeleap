@@ -35,3 +35,23 @@ class PostLikeTest(APITestCase):
         self.client.logout()
         response = self.client.post(self.like_url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_like_another_user_post(self):
+        # Create another user
+        other_user = User.objects.create_user(email='other@example.com', username='otheruser', password='password123')
+
+        # Create a post by the other user
+        other_post = Post.objects.create(user=other_user, title='Other Post', content='Content')
+
+        # URL to like the other user's post
+        other_like_url = reverse('post-like', kwargs={'pk': other_post.id})
+
+        # Current user likes the other user's post
+        response = self.client.post(other_like_url)
+
+        # Verify response is 200 OK (allowed)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Verify persistence in database
+        self.assertTrue(Like.objects.filter(user=self.user, post=other_post).exists())
+        self.assertEqual(other_post.likes.count(), 1)
