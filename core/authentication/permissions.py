@@ -50,6 +50,10 @@ class UserPermission(BasePermission):
             if request.method in ['GET', 'HEAD', 'OPTIONS']:
                 return True
 
+            # Allow like action for all authenticated users
+            if view.basename == 'post' and view.action == 'like':
+                return True
+
             # For write operations (POST, PUT, PATCH, DELETE), check ownership
             # Assuming the object has a 'user' field
             return obj.user == request.user
